@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Patient;
 
+use App\Models\Appointment;
+
 use Carbon\Carbon;
 
 class SiteController extends Controller {
@@ -67,32 +69,47 @@ class SiteController extends Controller {
 		return redirect()->route('client')->with('toast', 'Paciente removido com sucesso.');
 	}
 
-	public function getAppointment($appointment_id) {
-		// - TODO: Retornar consulta
-		$appointment = null;
-		return view('appointment', [ 'appointment' => $appointment ]);
-	}
+    public function getAppointment($appointment_id) {
+        $appointment = Appointment::with('patient')->findOrFail($appointment_id);
+        return view('appointment', compact('appointment'));
+    }
 
 	public function getCreateAppointment() {
 		return view('create-appointment');
 	}
 
-	public function postCreateAppointment(Request $request) {
-		// - TODO: Agendar a consulta
-		return redirect()->route('client')->with('toast', 'Consulta marcada com sucesso.');
-	}
+    public function postCreateAppointment(Request $request) {
+        $request->validate([
+            'patient' => 'required|exists:patients,id',
+            'date' => 'required|date_format:d/m/Y',
+            'time' => 'required|date_format:H:i',
+        ]);
+
+        $appointmentDateTime = Carbon::createFromFormat('d/m/Y H:i', $request->date . ' ' . $request->time);
+
+        $existingAppointment = Appointment::where('date_time', $appointmentDateTime)->first();
+        if ($existingAppointment) {
+            return redirect()->back()->withErrors(['time' => 'Este horário já está ocupado.']);
+        }
+
+        Appointment::create([
+            'patient_id' => $request->patient,
+            'date_time' => $appointmentDateTime,
+            'status' => 'AGENDADA',
+        ]);
+
+        return redirect()->route('client')->with('toast', 'Consulta marcada com sucesso.');
+    }
 
 	// ------------------ Veterinário ------------------
-	public function getVet(Request $request) {
-		// - TODO: Retornar todos os agendamentos
-		$appointments = [];
-		return view('vet', [ 'appointments' => $appointments ]);
-	}
+    public function getVet(Request $request) {
+        $appointments = Appointment::with(['patient.owner'])->get();
+        return view('vet', ['appointments' => $appointments]);
+    }
 
-	public function getEditAppointment($appointment_id) {
-		// - TODO: Retornar consulta
-		$appointment = null;
-		return view('edit-appointment', [ 'appointment' => $appointment ]);
-	}
+    public function editAppointment($id){
+        $appointment = Appointment::with(['patient.owner'])->findOrFail($id);
+        return view('edit-appointment', ['appointment' => $appointment]);
+    }
 
 }

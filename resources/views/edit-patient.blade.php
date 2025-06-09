@@ -7,8 +7,7 @@
 
         @if($patient->picture)
         <div class="mt-4">
-            <img src="{{ asset('storage/' . $patient->picture) }}" alt="Foto do paciente" class="radius" height="140"
-                style="max-width: 200px; max-height: 200px;">
+            <img src="{{ asset('storage/' . $patient->picture) }}" alt="Foto do paciente" class="radius" height="140">
         </div>
         @endif
 
@@ -20,7 +19,7 @@
                     <div class="form-group">
                         <label for="name">Nome</label>
                         <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                            id="name" value="{{ old('name', $patient->name) }}">
+                            id="name" value="{{ old('name', $patient->name) }}" required>
                         @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -30,7 +29,8 @@
 
                     <div class="form-group">
                         <label for="gender">Sexo</label>
-                        <select name="gender" class="form-control @error('gender') is-invalid @enderror" id="gender">
+                        <select name="gender" class="form-control @error('gender') is-invalid @enderror" id="gender"
+                            required>
                             <option value="">Selecione</option>
                             <option @if(old('gender', $patient->gender) == 'M') selected @endif value="M">Macho</option>
                             <option @if(old('gender', $patient->gender) == 'F') selected @endif value="F">Fêmea</option>
@@ -44,10 +44,11 @@
 
                     <div class="form-group">
                         <label for="breed">Raça</label>
-                        <select name="breed" class="form-control @error('breed') is-invalid @enderror" id="breed">
+                        <select name="breed" class="form-control @error('breed') is-invalid @enderror" id="breed"
+                            required>
                             <?php
-									$breeds = [ 'Afegão Hound', 'Affenpinscher', 'Airedale Terrier', 'Akita', 'American Staffordshire Terrier', 'Basenji', 'Basset Hound', 'Beagle', 'Beagle Harrier', 'Bearded Collie', 'Bedlington Terrier', 'Bichon Frisé', 'Bloodhound', 'Bobtail', 'Boiadeiro Australiano', 'Boiadeiro Bernês', 'Border Collie', 'Border Terrier', 'Borzoi', 'Boston Terrier', 'Boxer', 'Buldogue Francês', 'Buldogue Inglês', 'Bull Terrier', 'Bulmastife', 'Cairn Terrier', 'Cane Corso', 'Cão de Água Português', 'Cão de Crista Chinês', 'Cavalier King Charles Spaniel', 'Chesapeake Bay Retriever', 'Chihuahua', 'Chow Chow', 'Cocker Spaniel Americano', 'Cocker Spaniel Inglês', 'Collie', 'Coton de Tuléar', 'Dachshund', 'Dálmata', 'Dandie Dinmont Terrier', 'Dobermann', 'Dogo Argentino', 'Dogue Alemão', 'Fila Brasileiro', 'Fox Terrier (Pelo Duro e Pelo Liso)', 'Foxhound Inglês', 'Galgo Escocês', 'Galgo Irlandês', 'Golden Retriever', 'Grande Boiadeiro Suiço', 'Greyhound', 'Grifo da Bélgica', 'Husky Siberiano', 'Jack Russell Terrier', 'King Charles', 'Komondor', 'Labradoodle', 'Labrador Retriever', 'Lakeland Terrier', 'Leonberger', 'Lhasa Apso', 'Lulu da Pomerânia', 'Malamute do Alasca', 'Maltês', 'Mastife', 'Mastim Napolitano', 'Mastim Tibetano', 'Norfolk Terrier', 'Norwich Terrier', 'Papillon', 'Pastor Alemão', 'Pastor Australiano', 'Pinscher Miniatura', 'Poodle', 'Pug', 'Rottweiler', 'Sem Raça Definida (SRD)', 'ShihTzu', 'Silky Terrier', 'Skye Terrier', 'Staffordshire Bull Terrier', 'Terra Nova', 'Terrier Escocês', 'Tosa', 'Weimaraner', 'Welsh Corgi (Cardigan)', 'Welsh Corgi (Pembroke)', 'West Highland White Terrier', 'Whippet', 'Xoloitzcuintli', 'Yorkshire Terrier' ];
-								?>
+                                $breeds = [ 'Afegão Hound', 'Affenpinscher', 'Airedale Terrier', 'Akita', 'American Staffordshire Terrier', 'Basenji', 'Basset Hound', 'Beagle', 'Beagle Harrier', 'Bearded Collie', 'Bedlington Terrier', 'Bichon Frisé', 'Bloodhound', 'Bobtail', 'Boiadeiro Australiano', 'Boiadeiro Bernês', 'Border Collie', 'Border Terrier', 'Borzoi', 'Boston Terrier', 'Boxer', 'Buldogue Francês', 'Buldogue Inglês', 'Bull Terrier', 'Bulmastife', 'Cairn Terrier', 'Cane Corso', 'Cão de Água Português', 'Cão de Crista Chinês', 'Cavalier King Charles Spaniel', 'Chesapeake Bay Retriever', 'Chihuahua', 'Chow Chow', 'Cocker Spaniel Americano', 'Cocker Spaniel Inglês', 'Collie', 'Coton de Tuléar', 'Dachshund', 'Dálmata', 'Dandie Dinmont Terrier', 'Dobermann', 'Dogo Argentino', 'Dogue Alemão', 'Fila Brasileiro', 'Fox Terrier (Pelo Duro e Pelo Liso)', 'Foxhound Inglês', 'Galgo Escocês', 'Galgo Irlandês', 'Golden Retriever', 'Grande Boiadeiro Suiço', 'Greyhound', 'Grifo da Bélgica', 'Husky Siberiano', 'Jack Russell Terrier', 'King Charles', 'Komondor', 'Labradoodle', 'Labrador Retriever', 'Lakeland Terrier', 'Leonberger', 'Lhasa Apso', 'Lulu da Pomerânia', 'Malamute do Alasca', 'Maltês', 'Mastife', 'Mastim Napolitano', 'Mastim Tibetano', 'Norfolk Terrier', 'Norwich Terrier', 'Papillon', 'Pastor Alemão', 'Pastor Australiano', 'Pinscher Miniatura', 'Poodle', 'Pug', 'Rottweiler', 'Sem Raça Definida (SRD)', 'ShihTzu', 'Silky Terrier', 'Skye Terrier', 'Staffordshire Bull Terrier', 'Terra Nova', 'Terrier Escocês', 'Tosa', 'Weimaraner', 'Welsh Corgi (Cardigan)', 'Welsh Corgi (Pembroke)', 'West Highland White Terrier', 'Whippet', 'Xoloitzcuintli', 'Yorkshire Terrier' ];
+							?>
                             <option value="">Selecione</option>
                             @foreach ($breeds as $breed)
                             <option @if(old('breed', $patient->breed) == $breed) selected @endif
@@ -65,7 +66,8 @@
                         <label for="birthdate">Data de nascimento</label>
                         <input type="text" name="birthdate" autocomplete="off"
                             class="form-control @error('birthdate') is-invalid @enderror" id="birthdate"
-                            value="{{ old('birthdate', $patient->birthdate ? $patient->birthdate->format('d/m/Y') : '') }}">
+                            value="{{ old('birthdate', $patient->birthdate ? $patient->birthdate->format('d/m/Y') : '') }}"
+                            required>
                         @error('birthdate')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -76,16 +78,13 @@
                     <div class="form-group">
                         <label for="picture">Foto</label>
                         <input type="file" name="picture" class="form-control @error('picture') is-invalid @enderror"
-                            id="picture" value="{{ old('picture') }}">
+                            id="picture" value="{{ old('picture') }}" required>
                         @error('picture')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-
-                        <!-- Pré-visualização da nova imagem -->
-                        <img id="picture-preview" src="#" alt="Pré-visualização da imagem"
-                            style="display: none; margin-top: 10px; max-width: 200px; max-height: 200px;">
+                        <img id="picture-preview" src="#" class="radius m-3" height="140" style="display: none;">
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block mt-4">Salvar</button>

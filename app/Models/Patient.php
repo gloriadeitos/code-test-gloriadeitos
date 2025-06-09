@@ -28,6 +28,14 @@ class Patient extends Model {
 		'birthdate'
 	];
 
+    public function appointments() {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function owner(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 	// Retorna o plural de dia, mês ou ano
 	private function pluralizeInterval($number, $singular, $plural) {
 		if ($number > 1) {
