@@ -3,7 +3,7 @@
 @section('content')
 <section class="py-6 border-bottom">
     <div class="container text-center">
-        <h1>Consulta #1</h1>
+        <h1>Consulta #{{ $appointment->id }}</h1>
 
         <div class="row mt-4 justify-content-center">
             <div class="col-md-10 text-left">
@@ -38,8 +38,8 @@
                         </tr>
                         <tr>
                             <th>Idade</th>
-                            <td>{{ $appointment->patient->age }} anos</td>
-                        </tr>
+                            <td>{{ $appointment->patient->getAge() }}</td>
+                            </tr>
                         <tr>
                             <th>Dono</th>
                             <td>{{ $appointment->patient->owner->name }}</td>

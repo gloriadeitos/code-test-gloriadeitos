@@ -44,7 +44,7 @@ class SiteController extends Controller {
 
         $request->validate([
             'birthdate' => 'required|date_format:d/m/Y',
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'breed' => 'required|string|max:255',
         ]);
 
@@ -52,7 +52,6 @@ class SiteController extends Controller {
         $data['birthdate'] = Carbon::createFromFormat('d/m/Y', $request->birthdate);
 
         if ($request->hasFile('picture')) {
-            // Salva a imagem no diretório correto
             $picturePath = $request->file('picture')->store('patients', 'public');
             $data['picture'] = $picturePath;
         }
@@ -77,6 +76,24 @@ class SiteController extends Controller {
 	public function getCreateAppointment() {
 		return view('create-appointment');
 	}
+
+    public function getAvailableTimes(Request $request) {
+        $date = Carbon::createFromFormat('d/m/Y', $request->date);
+        $startTime = Carbon::create($date->year, $date->month, $date->day, 8); // 08:00
+        $endTime = Carbon::create($date->year, $date->month, $date->day, 18); // 18:00
+
+        $appointments = Appointment::whereDate('date_time', $date)->pluck('date_time');
+        $availableTimes = [];
+
+        while ($startTime->lessThan($endTime)) {
+            if (!$appointments->contains($startTime->format('Y-m-d H:i:s'))) {
+                $availableTimes[] = $startTime->format('H:i');
+            }
+            $startTime->addHour();
+        }
+
+        return response()->json($availableTimes);
+    }
 
     public function postCreateAppointment(Request $request) {
         $request->validate([
