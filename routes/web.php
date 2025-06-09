@@ -25,7 +25,7 @@ Route::post('logout', [ AuthController::class, 'getLogout' ])->name('logout');
 // Veterinário
 Route::get('vet', [ SiteController::class, 'getVet' ])->middleware('auth:vet')->name('vet');
 Route::get('editar-consulta/{appointment_id}', [ SiteController::class, 'editAppointment' ])->middleware('auth:vet')->name('vet.edit-appointment');
-
+Route::match(['get', 'post'], 'editar-consulta/{appointment_id}', [SiteController::class, 'editAppointment'])->middleware('auth:vet')->name('vet.edit-appointment');
 // Cliente
 Route::get('cliente', [ SiteController::class, 'getClient' ])->middleware('auth')->name('client');
 Route::get('editar-paciente/{patient_id?}', [ SiteController::class, 'getEditPatient' ])->name('client.edit-patient');

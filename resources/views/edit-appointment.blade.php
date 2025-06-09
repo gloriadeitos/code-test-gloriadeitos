@@ -39,7 +39,7 @@
                         <tr>
                             <th>Idade</th>
                             <td>{{ $appointment->patient->getAge() }}</td>
-                            </tr>
+                        </tr>
                         <tr>
                             <th>Dono</th>
                             <td>{{ $appointment->patient->owner->name }}</td>
@@ -51,11 +51,13 @@
 
         <div class="row mt-6 justify-content-center">
             <div class="col-md-6 text-left">
-                <form action="" method="POST">
+                <form action="{{ route('vet.edit-appointment', $appointment->id) }}" method="POST">
+                    @csrf
+                    <!-- Gera o token CSRF necessário para segurança -->
                     <div class="form-group">
                         <label for="notes">Observações</label>
                         <textarea name="notes" rows="7" class="form-control @error('notes') is-invalid @enderror"
-                            id="notes"></textarea>
+                            id="notes">{{ old('notes', $appointment->notes ?? '') }}</textarea>
                         @error('notes')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
