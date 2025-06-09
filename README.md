@@ -1,5 +1,19 @@
 # 👋💻😅 Bem-vindo(a) ao code test da Energié
 
+## ✍️ Sobre este repositório
+
+Este repositório é um **fork** do projeto original fornecido pela Energié para realização de um desafio técnico.
+
+Como forks no GitHub não permitem a criação direta de *issues*, trabalhei diretamente na **branch principal** com *commits* organizados. Em um projeto real, meu fluxo de trabalho usual envolve a criação de *issues* para rastrear tarefas e bugs, e a abertura de *branches* específicas para cada melhoria ou correção.
+
+Durante o desenvolvimento, utilizei o padrão de *Conventional Commits*. Normalmente, faço isso em **inglês**, mas, por se tratar de um processo seletivo em **português**, optei por manter os *commits* nesse idioma para facilitar a leitura da equipe avaliadora.
+
+Ademais, não achei o desafio difícil, inclusive foi bem divertido trabalhar com o sistema proposto. Além das tarefas solicitadas, **não implementei funcionalidades extras**, pois acredito que, em um ambiente profissional, é mais apropriado **sugerir melhorias e aguardar aprovação** antes de sair fazendo mudanças que não foram solicitadas.
+
+Alterações realizadas por **Glória Maria Deitos Gomes da Silva**.
+
+---
+
 Estamos entusiasmados em recebê-lo(a) nesta próxima etapa - você mereceu. Agora é hora de começar a escrever um pouco de código.
 
 ## 🐕 Rusky Vet
