@@ -124,26 +124,25 @@ class SiteController extends Controller {
         return view('vet', ['appointments' => $appointments]);
     }
 
-    public function editAppointment($appointment_id, Request $request){
+    public function editAppointment($appointment_id, Request $request)
+    {
         if ($request->isMethod('post')) {
-            // Validação dos dados enviados
+
             $request->validate([
                 'notes' => 'required|string|max:1000',
             ]);
 
-            // Atualizar a consulta
             $appointment = Appointment::findOrFail($appointment_id);
             $appointment->update([
                 'notes' => $request->notes,
                 'status' => 'FINALIZADA',
+                'finalized_by' => auth()->id(),
             ]);
 
-            // Redirecionar com mensagem de sucesso
             return redirect()->route('vet')->with('toast', 'Consulta finalizada com sucesso.');
         }
 
-        // Caso seja uma requisição GET, exibir a página de edição
-        $appointment = Appointment::findOrFail($appointment_id);
+        $appointment = Appointment::with(['patient.owner'])->findOrFail($appointment_id);
         return view('edit-appointment', compact('appointment'));
     }
 

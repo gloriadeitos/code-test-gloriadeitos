@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model {
     use HasFactory;
 
-    protected $fillable = ['patient_id', 'date_time', 'status'];
+    protected $fillable = ['patient_id', 'date_time', 'status', 'finalized_by', 'notes'];
 
     protected $casts = [
         'date_time' => 'datetime',
@@ -16,5 +16,9 @@ class Appointment extends Model {
 
     public function patient() {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function finalizedBy(){
+        return $this->belongsTo(User::class, 'finalized_by');
     }
 }

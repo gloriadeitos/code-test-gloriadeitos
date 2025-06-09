@@ -44,31 +44,35 @@
                             <th>Dono</th>
                             <td>{{ $appointment->patient->owner->name }}</td>
                         </tr>
+                        <tr>
+                            <th>Atendimento realizado por</th>
+                            <td>{{ $appointment->finalizedBy->name ?? 'Não registrado' }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div class="row mt-6 justify-content-center">
-            <div class="col-md-6 text-left">
-                <form action="{{ route('vet.edit-appointment', $appointment->id) }}" method="POST">
+            <div class="col-md-6 text-center">
+                <form method="POST" action="{{ route('vet.edit-appointment', $appointment->id) }}">
                     @csrf
-                    <!-- Gera o token CSRF necessário para segurança -->
                     <div class="form-group">
-                        <label for="notes">Observações</label>
-                        <textarea name="notes" rows="7" class="form-control @error('notes') is-invalid @enderror"
-                            id="notes">{{ old('notes', $appointment->notes ?? '') }}</textarea>
-                        @error('notes')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+                        <label for="notes"><strong>Observações</strong></label>
+                        @if ($appointment->status === 'FINALIZADA')
+                        <div class="form-control-plaintext">{{ $appointment->notes }}</div>
+                        @else
+                        <textarea id="notes" name="notes" class="form-control" rows="5"
+                            required>{{ old('notes', $appointment->notes) }}</textarea>
+                        @endif
                     </div>
-
-                    <button type="submit" class="btn btn-primary btn-block mt-4">Salvar e finalizar consulta</button>
+                    @if ($appointment->status !== 'FINALIZADA')
+                    <button type="submit" class="btn btn-primary mt-3">Salvar e finalizar consulta</button>
+                    @endif
                 </form>
             </div>
         </div>
+
     </div>
 </section>
 @endsection
