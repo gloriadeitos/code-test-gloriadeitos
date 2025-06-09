@@ -37,25 +37,28 @@ class SiteController extends Controller {
 		return view('edit-patient', [ 'patient' => $patient ]);
 	}
 
-	public function postEditPatient($patient_id, Request $request) {
-		$patient = Patient::find($patient_id);
+    public function postEditPatient($patient_id, Request $request) {
+        $patient = Patient::find($patient_id);
 
         $request->validate([
             'birthdate' => 'required|date_format:d/m/Y',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'breed' => 'required|string|max:255',
         ]);
 
+        $data = $request->except(['birthdate', 'picture']);
+        $data['birthdate'] = Carbon::createFromFormat('d/m/Y', $request->birthdate);
+
         if ($request->hasFile('picture')) {
+            // Salva a imagem no diretório correto
             $picturePath = $request->file('picture')->store('patients', 'public');
-            $patient->picture = $picturePath;
+            $data['picture'] = $picturePath;
         }
 
-		$data = array_merge($request->except('birthdate'), [ 'birthdate' => Carbon::createFromFormat('d/m/Y', $request->birthdate) ]);
-		$patient->update( $data );
-        $patient->save();
+        $patient->update($data);
 
-		return redirect()->route('client')->with('toast', 'Paciente salvo com sucesso.');
-	}
+        return redirect()->route('client')->with('toast', 'Paciente salvo com sucesso.');
+    }
 
 	public function getRemovePatient($patient_id) {
 		$patient = Patient::find($patient_id);
